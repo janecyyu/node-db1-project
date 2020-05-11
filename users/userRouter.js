@@ -51,6 +51,23 @@ router.put("/:id", (req, res) => {
     });
 });
 
+router.delete("/:id", (req, res) => {
+  db("accounts")
+    .where({ id: req.params.id })
+    .del()
+    .then((remove) => {
+      if (remove) {
+        res.status(201).json({ data: remove });
+      } else {
+        res.status(404).json({ message: "no id" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err });
+    });
+});
+
 function isValidPost(post) {
   return Boolean(post.name && post.budget);
 }
