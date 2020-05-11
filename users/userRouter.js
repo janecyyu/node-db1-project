@@ -14,6 +14,22 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:id", (req, res) => {
+  db("accounts")
+    .where({
+      id: req.params.id,
+    })
+    .select("*")
+    .first() //pick the first record from the array
+    .then((posts) => {
+      res.status(200).json({ data: posts });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err });
+    });
+});
+
 router.post("/", (req, res) => {
   const user = req.body;
   if (isValidPost(user)) {
