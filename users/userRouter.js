@@ -33,6 +33,24 @@ router.post("/", (req, res) => {
   }
 });
 
+router.put("/:id", (req, res) => {
+  const changes = req.body;
+  db("accounts")
+    .where({ id: req.params.id })
+    .update(changes)
+    .then((c) => {
+      if (c) {
+        res.status(201).json({ data: c });
+      } else {
+        res.status(404).json({ message: "no id" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err });
+    });
+});
+
 function isValidPost(post) {
   return Boolean(post.name && post.budget);
 }
